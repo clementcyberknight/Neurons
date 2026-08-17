@@ -1,37 +1,37 @@
 {
-  "team_id": "your-team-id",
-  "domain": "coding_assistants",
+  "team_id": "clementakhimien25",
+  "domain": "corporate_enterprise",
   "language_scope": ["en"],
-  "african_alpha_claim": false,
+  "african_alpha_claim": true,
   "budget_laptop_claim": true,
   "submitter": {
-    "name": "your-name",
-    "email": "your-email@domain.com",
-    "github_handle": "your-github"
+    "name": "Clement Akhimien",
+    "email": "clementakhimien25@gmail.com",
+    "github_handle": "clementcyberknight"
   },
   "cross_disciplinary_pairing": {
-    "discipline": "education",
+    "discipline": "retail_operations",
     "load_bearing": true,
-    "description": "Brief description of how your model serves a real-world domain."
+    "description": "Offline desktop assistant for African SMEs: charts, shift scheduling, fraud alerts, and tool calls with zero cloud dependency."
   },
   "test_prompts": [
     {
       "prompt_id": "tp_001",
-      "prompt": "Write a Python function that reads a CSV file and returns the column with the highest mean value."
+      "prompt": "Alert the management team about a potential cashier discount fraud on POS Station 3 involving Employee ID #402, and automatically create a high-priority follow-up task for the Store Manager to review audit logs by tomorrow morning."
     },
     {
       "prompt_id": "tp_002",
-      "prompt": "Explain the difference between a list and a tuple in Python, and give one example where each is the better choice."
+      "prompt": "Review this internal audit snippet: \"During the Q2 audit of our primary retail branch, we found that 22% of POS transaction overrides were approved manually by shift supervisors without attached invoice receipts. Additionally, inventory discrepancy logs show 140 missing units of high-value electronics valued at $4,200. Reorder alerts for fast-moving items are currently delayed by 48 hours due to manual ledger entries.\" Provide a concise summary of the risks and 3 immediate action items."
     }
   ],
   "model": {
-    "name": "SmolLM2-135M-Instruct-Q4_K_M",
+    "name": "Qwen2.5-1.5B-Custom-IQ3_XS",
     "runtime": "llama.cpp",
-    "quantization": "GGUF Q4_K_M",
-    "parameters_estimate": "135M",
+    "quantization": "GGUF IQ3_XS",
+    "parameters_estimate": "1.5B",
     "packaging": "binary_bundle"
   },
   "_runtime": {
-    "model_path": "model/SmolLM2-135M-Instruct-Q4_K_M.gguf"
+    "model_path": "model/qwen2.5-1.5b-custom-IQ3_XS.gguf"
   }
 }
