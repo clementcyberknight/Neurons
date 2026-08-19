@@ -1,12 +1,12 @@
 #!/usr/bin/env bash
-# Download the fine-tuned Qwen2.5-1.5B IQ3_XS GGUF (~698 MB) for the ADTC 2026
+# Download the fine-tuned bau-small-1.5b IQ3_XS GGUF (~698 MB) for the ADTC 2026
 # submission. Idempotent: safe to run multiple times.
 set -euo pipefail
 
 HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 MODEL_DIR="$HERE/model"
-MODEL_FILE="$MODEL_DIR/qwen2.5-1.5b-custom-IQ3_XS.gguf"
-MODEL_URL="https://huggingface.co/cyberknine/bau-qwen/resolve/main/qwen2.5-1.5b-custom-IQ3_XS.gguf"
+MODEL_FILE="$MODEL_DIR/bau-small-1.5b.gguf"
+MODEL_URL="https://huggingface.co/cyberknine/bau-qwen/resolve/main/bau-small-1.5b.gguf"
 
 mkdir -p "$MODEL_DIR"
 
