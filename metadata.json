@@ -27,7 +27,7 @@
   "model": {
     "name": "bau-small-1.5b",
     "runtime": "llama.cpp",
-    "quantization": "GGUF IQ3_XS",
+    "quantization": "GGUF Q4_K_M",
     "parameters_estimate": "1.5B",
     "packaging": "binary_bundle"
   },
