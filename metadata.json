@@ -12,16 +12,16 @@
   "cross_disciplinary_pairing": {
     "discipline": "retail_operations",
     "load_bearing": true,
-    "description": "Offline desktop business assistant for African SMEs: generative data charts, shift scheduling, fraud alerts, and tool calls with zero cloud dependency."
+    "description": "Offline desktop business operating system for African SMEs: commercial proposal drafting, internal forensic audits, POS fraud alerts, inventory analysis, and deterministic store function calling with zero cloud dependency."
   },
   "test_prompts": [
     {
       "prompt_id": "tp_001",
-      "prompt": "Generate a chart showing the distribution of pallet SKU types across our warehouse zones: Zone A has 400 pallets, Zone B has 350 pallets, Zone C has 150 pallets, and Zone D has 100 pallets."
+      "prompt": "How can I increase my store's daily sales and improve cash flow this month? Provide 3 actionable steps."
     },
     {
       "prompt_id": "tp_002",
-      "prompt": "How can our retail store reduce cashier discrepancy losses during peak hours without slowing down checkout queues?"
+      "prompt": "What are 4 practical ways to manage fast-moving inventory and prevent dead stock in a retail shop?"
     }
   ],
   "model": {

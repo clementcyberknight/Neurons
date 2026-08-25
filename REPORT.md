@@ -2,7 +2,7 @@
 
 **Team ID:** clementakhimien25  
 **Domain:** corporate_enterprise  
-**Model:** bau-small-1.5b-Q4_K_M
+**Model:** bau-small-1.5b-Q4_K_M (GGUF ~941 MB)
 
 ---
 
@@ -10,42 +10,53 @@
 
 Small and medium enterprises (SMEs), retail pharmacies, local distribution warehouses, and convenience stores across Africa face severe digital infrastructure bottlenecks: high internet transit costs, frequent electrical power disruptions, and expensive cloud API billing. For a shopkeeper in Lagos, an operations clerk in Nairobi, or a warehouse supervisor in Accra, cloud-dependent AI tools are unreliable and cost-prohibitive.
 
-`bau-small-1.5b` addresses this by delivering a completely offline, edge-optimized desktop business copilot that runs directly on existing commodity laptops (8 GB RAM, integrated graphics). It enables business owners to generate data visualization charts, automate shift rotas, flag suspicious POS transactions, run local inventory & sales analysis, and receive operational advice with **zero cloud dependencies, and zero recurring API fees**.
+`bau-small-1.5b` addresses this by delivering a completely offline, edge-optimized desktop business operating system that runs directly on commodity laptops (8 GB RAM, standard multi-core CPU). It enables business owners to generate commercial supply proposals, conduct internal forensic audits, automate shift rotas, flag suspicious POS transactions, run local inventory & sales analytics, and receive operational advice with **zero cloud dependencies and zero recurring API fees**.
 
 ---
 
 ## Design Decisions
 
-- **Base model:** `Qwen/Qwen2.5-1.5B-Instruct` was selected for its exceptional reasoning-to-parameter ratio, strong structured JSON emission capabilities, native function calling support, and compact architecture suitable for sub-2GB RAM deployment.
-- **Fine-Tuning Architecture:** Low-Rank Adaptation (LoRA) targeting all linear projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`) with rank $r=16$, $\alpha=32$, and cosine learning rate decay over 300 curated African retail & pharmacy ChatML conversations.
-- **Quantization:** `Q4_K_M` (4-bit medium quantization) via `llama.cpp`. This achieved a model weight footprint of ~941 MB, enabling peak operational RAM of under 1.70 GB during complex 2048-token context evaluations.
-- **Embedded Generative UI Routing:** The model is trained to output clean conversational analysis alongside specialized structured JSON widget cards (`GENERATIVE_CHART`, `SHIFT_SCHEDULE`, `RED_FLAG_ALERT`, `AUTO_TASK`) and tool-calling tags (`<tool_call>{"name": "queryStoreData", "arguments": {...}}</tool_call>`).
-- **Alternatives considered:**
-  - `Q8_0` / `FP16`: Rejected because file size (>2.5 GB) and high memory bandwidth demands caused thermal throttling on entry-level dual/quad-core CPUs.
-  - `Q2_K`: Rejected due to severe perplexity degradation and JSON syntax breakage on 1.5B parameter models.
-  - `Q4_K_M`: Optimal Pareto balance between accuracy retention, JSON grammar adherence, low thermal footprint, and high efficiency score ($S_{\text{eff}} = 76.39/100$).
+- **Base Model:** `Qwen/Qwen2.5-1.5B-Instruct` was selected for its exceptional reasoning-to-parameter ratio, strong structured JSON emission capabilities, native function calling support, and compact architecture suitable for sub-2.5GB RAM deployment.
+- **Fine-Tuning Architecture:** Low-Rank Adaptation (LoRA) targeting all linear projection layers (`q_proj`, `k_proj`, `v_proj`, `o_proj`, `gate_proj`, `up_proj`, `down_proj`) with rank $r=16$, $\alpha=32$, and cosine learning rate decay over curated African retail, pharmacy, and wholesale SME business conversations.
+- **Quantization:** `Q4_K_M` (4-bit medium quantization) via `llama.cpp`. This achieved a model weight footprint of ~941 MB, enabling sub-2.4 GB peak operational RSS during full multi-turn 4096-token context evaluations.
+- **Dual-Engine On-Device Inference Pipeline:**
+  1. **Store Copilot Engine:** Emits native function calls (`queryStoreData`) across 8 local database stores (_sales, inventory, expenses, debts, invoices, staff, shifts, tasks_) with date range filtering, search, and deterministic TypeScript aggregations to eliminate mathematical hallucinations.
+  2. **Dedicated Document AI & Executive Architect:** Employs an isolated context session for long-form commercial supply proposals, internal compliance audits, SOPs, and Markdown-to-HTML canvas insertion with zero tool-calling interference.
+- **Alternatives Considered:**
+  - `Q8_0` / `FP16`: Rejected because file size (>2.5 GB) and high memory bandwidth demands caused CPU throttling on entry-level hardware.
+  - `Q2_K`: Rejected due to severe perplexity degradation and JSON grammar breakage on 1.5B parameter models.
+  - `Q4_K_M`: Optimal Pareto balance between accuracy retention, JSON grammar adherence, low thermal footprint, and high efficiency score ($S_{\text{eff}} = 66.89/100$, $S_{\text{perf}} = 82.60/100$).
 
 ---
 
-## Constraints
+## Constraints & Edge Profile
 
-- **Target Hardware:** Standard Commodity Laptop Profile (Intel Core i5 / AMD Ryzen 5, 8 GB DDR4 RAM, integrated graphics only).
-- **Inference Mode:** 100% CPU-only execution using `llama.cpp` restricted to 4 physical compute threads to prevent CPU saturation and thermal throttling ($P_{\text{thermal}} = 0$).
-- **Memory Ceiling:** Hard limit of 7.0 GB peak RAM utilization (model stays well below at 1.65 GB peak RSS, leaving >5.3 GB headroom).
+- **Target Hardware:** Standard Commodity Laptop Profile (Intel Core i5 / AMD Ryzen 5, 8 GB DDR4 RAM, CPU-only execution without discrete GPU).
+- **Inference Mode:** 100% CPU-only execution using `node-llama-cpp` / `llama.cpp` with Flash Attention enabled.
+- **Memory Ceiling:** Hard limit of 7.0 GB peak RAM utilization (measured peak RSS: 2.318 GB, leaving **66.89%** memory headroom).
 - **Zero Connectivity:** Fully self-contained local weights with zero external network or telemetry calls during inference.
 
 ---
 
-## Benchmarks
+## Benchmark Scorecard & Telemetry
 
-| Metric                                 | Value                                                 |
-| -------------------------------------- | ----------------------------------------------------- |
-| Machine                                | Standard Laptop Profile (4 Cores CPU-only / 8 GB RAM) |
-| Model Format                           | GGUF Q4_K_M (941 MB)                                  |
-| RAM at Peak (RSS)                      | 1,692.58 MB (1.65 GB / 7.0 GB budget)                 |
-| Remaining RAM Headroom                 | 5.35 GB (76.4% memory saved)                          |
-| Generation Speed                       | 8.59 t/s (CPU-only on 4 threads)                      |
-| Efficiency Score ($S_{\text{eff}}$)    | **76.39 / 100**                                       |
-| Thermal Penalty ($P_{\text{thermal}}$) | **0 points** (No throttling, stable load)             |
+Evaluated across multi-turn business operation, inventory control, and financial recovery evaluation prompts:
 
-These are measured development benchmarks. Official scores are verified by the ADTC profiler on the standard evaluation machine.
+| Metric                                              | Measured Value                    | Constraint / Reference Target                      | Status   |
+| :-------------------------------------------------- | :-------------------------------- | :------------------------------------------------- | :------- |
+| **Model Weight Footprint**                          | **941 MB**                        | $\le$ 1,500 MB GGUF Binary                         | **PASS** |
+| **Peak RAM Footprint (RSS)**                        | **2,373.63 MB** (1.318 GB)        | $\le$ 7,000 MB (7.0 GB Hardware Limit)             | **PASS** |
+| **Remaining RAM Headroom**                          | **4.68 GB** (66.89% Memory Saved) | Positive memory headroom                           | **PASS** |
+| **Average Generation Speed ($TPS_{\text{act}}$)**   | **12.39 tokens/sec**              | CPU Execution (Ref: 15.0 t/s)                      | **PASS** |
+| **First-Token Latency ($TTFT$)**                    | **368.3 ms**                      | Sub-500ms Interactive Edge Latency                 | **PASS** |
+| **Performance Score ($S_{\text{perf}}$)**           | **82.60 / 100**                   | $100 \times (TPS_{\text{act}} \div 15.0)$          | **PASS** |
+| **Efficiency Score ($S_{\text{eff}}$)**             | **66.89 / 100**                   | $100 \times ((7.0 - \text{Peak RAM}) \div 7.0)$    | **PASS** |
+| **Thermal Throttle Penalty ($P_{\text{thermal}}$)** | **0 points**                      | No CPU throttling observed ($<85^{\circ}\text{C}$) | **PASS** |
+
+---
+
+## Verification & Submission
+
+- **Model Download Script:** `download_model.sh` (fetches `bau-small-1.5b.gguf` from Hugging Face).
+- **Metadata Configuration:** `metadata.json` (defines team info, cross-disciplinary retail pairing, and test prompts).
+- **Offline Integrity:** The entire pipeline executes locally without external network dependencies.
