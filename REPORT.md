@@ -1,6 +1,6 @@
 # Technical Report — BAU-Small-1.5B (Offline Desktop Business Copilot)
 
-**Team ID:** clementakhimien25  
+**Team ID:** 1141566-neuron
 **Domain:** corporate_enterprise  
 **Model:** bau-small-1.5b-Q4_K_M (GGUF ~941 MB)
 
